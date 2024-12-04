@@ -16,15 +16,15 @@ module.exports = function(grunt) {
             watch: {
                 less: {
                     files: ['src/styles/**/*.less'],
-                    task: ['less:production']
+                    tasks: ['less:production']
                 },
                 html: {
                     files: ['src/index.html'],
-                    task: ['replace:dist']
+                    tasks: ['replace:dist', 'htmlmin:dist']
                     },
                 js: {
                     files: ['src/scripts/**/*.js'],
-                    task: ['uglify','replace:dist']
+                    tasks: ['uglify','replace:dist']
                     }    
                 },
                 
@@ -54,14 +54,14 @@ module.exports = function(grunt) {
             },
 
             files: [{
-                src:'src/index.html',
-                dest: 'dist/index.min.html'
+                src: ['src/index.html'],
+                dest: 'dist/'
             }],
 
             htmlmin: {
                 dist: {
                     options: {
-                        removeComments: true,
+                        removeComments: true,         
                         collapseWhitespace: true
                     },
                     files: {
@@ -77,8 +77,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-replace');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-replace');
 
 
-    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('default', ['less:production','uglify','replace:dist','htmlmin:dist','watch']);
 }
